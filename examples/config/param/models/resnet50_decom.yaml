@@ -1,0 +1,3 @@
+resnet50Decom:
+  pretrained: imagenet
+  bn_freeze: true

@@ -1,0 +1,135 @@
+metrics:
+  - default: euclid.yaml # not used
+
+collectors:
+  - collector: AVSLCollector.yaml # New
+
+selectors:
+  - selector0: DefaultSelector.yaml
+  - selector1: DefaultSelector.yaml
+  - selector2: DefaultSelector.yaml
+  - selectorfinal: DefaultSelector.yaml # for final metric_mat
+
+losses:
+  - loss0: ProxyAnchorLoss.yaml
+  - loss1: ProxyAnchorLoss.yaml
+  - loss2: ProxyAnchorLoss.yaml
+  - lossfinal: ProxyAnchorLoss.yaml # for final metric_mat
+
+models:
+  - trunk: resnet50_decom.yaml # New
+  - embedder: resnet50_mlp_avsl.yaml # New
+
+evaluators:
+  - default: CalculatorFromMat.yaml # New
+
+optimizers:
+  - trunk: AdamW_models.yaml
+  - embedder: AdamW_models.yaml
+  - collector: AdamW_collectors.yaml
+
+schedulers:
+  - trunk: step_lr.yaml
+  - embedder: step_lr.yaml
+  - collector: step_lr.yaml
+
+gradclipper:
+  - trunk: gradclipper_models.yaml
+  - embedder: gradclipper_models.yaml
+  - collector: gradclipper_collectors.yaml
+
+transforms:
+  - train: train_transforms.yaml
+  - test: eval_transforms.yaml
+
+datasets:
+  - train: cub200_train.yaml
+  - test: cub200_test.yaml
+
+# samplers:
+#   - train: MPerClassFullSampler.yaml
+
+recorders:
+  - default: base_recorder.yaml
+
+trainers: 
+  - default: BaseTrainer.yaml
+
+testers:
+  - default: TesterFromMat.yaml # New
+
+managers:
+  - default: BaseManager.yaml
+
+LINK_SETTING: 
+  to_device_list: [models, collectors]
+  to_wrap_list: [models/trunk]
+  device_type: DP
+
+PIPELINE_SETTING:
+  models:
+    trunk:
+      input: [data]
+      output: [data]
+      map: 
+        models/embedder: [0]
+    embedder:
+      input: [data]
+      output: [embed_list, certainty_list, link_list]
+      map:
+        collectors/collector: [0,1,2]
+  collectors:
+    collector:
+      input: [embed_list, certainty_list, link_list, labels]
+      output: [metric_mat, metric_mat, metric_mat, metric_mat, row_labels, col_labels, is_same_source, weight, weight, weight]
+      map:
+        selectors/selectorfinal->PALoss: [0,4,5,6]
+        selectors/selector0->PALoss0: [1,4,5,6]
+        selectors/selector1->PALoss1: [2,4,5,6]
+        selectors/selector2->PALoss2: [3,4,5,6]
+        FINISH/default->PALoss0: [7]
+        FINISH/default->PALoss1: [8]
+        FINISH/default->PALoss2: [9]
+  selectors:
+    selector0:
+      input: [metric_mat, row_labels, col_labels, is_same_source]
+      output: [metric_mat, row_labels, col_labels, is_same_source, indices_tuple, weight]
+      map:
+        losses/loss0: [0,1,2,3,4,5]
+    selector1:
+      input: [metric_mat, row_labels, col_labels, is_same_source]
+      output: [metric_mat, row_labels, col_labels, is_same_source, indices_tuple, weight]
+      map:
+        losses/loss1: [0,1,2,3,4,5]
+    selector2:
+      input: [metric_mat, row_labels, col_labels, is_same_source]
+      output: [metric_mat, row_labels, col_labels, is_same_source, indices_tuple, weight]
+      map:
+        losses/loss2: [0,1,2,3,4,5]
+    selectorfinal:
+      input: [metric_mat, row_labels, col_labels, is_same_source]
+      output: [metric_mat, row_labels, col_labels, is_same_source, indices_tuple, weight]
+      map:
+        losses/lossfinal: [0,1,2,3,4,5]
+  losses:
+    loss0:
+      input: [metric_mat, row_labels, col_labels, indices_tuple, weights, is_same_source]
+      output: [loss]
+      map:
+        FINISH/default: [0]
+    loss1:
+      input: [metric_mat, row_labels, col_labels, indices_tuple, weights, is_same_source]
+      output: [loss]
+      map:
+        FINISH/default: [0]
+    loss2:
+      input: [metric_mat, row_labels, col_labels, indices_tuple, weights, is_same_source]
+      output: [loss]
+      map:
+        FINISH/default: [0]
+    lossfinal:
+      input: [metric_mat, row_labels, col_labels, indices_tuple, weights, is_same_source]
+      output: [loss]
+      map:
+        FINISH/default: [0]
+

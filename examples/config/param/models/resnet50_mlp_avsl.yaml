@@ -1,0 +1,3 @@
+AVSLEmbedder:
+  feature_dim_list: [512, 1024, 2048]
+  output_dim: 512

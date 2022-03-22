@@ -1,0 +1,8 @@
+AVSLCollector:
+  feature_dim_list: [576, 1056, 1024]
+  embed_dim: 512
+  is_normalize: true
+  prob_gamma: 10
+  index_p: 2
+  topk_corr: 128
+  m: 0.5
