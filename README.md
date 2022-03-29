@@ -1,6 +1,6 @@
 # Attributable Visual Similarity Learning
 
-This repository is the official PyTorch implementation of **Attributable Visual Similarity Learning** (CVPR 2022). 
+This repository is the official PyTorch implementation of **Attributable Visual Similarity Learning** (CVPR 2022). [![arXiv](https://img.shields.io/badge/arXiv-2203.14932-b31b1b.svg?style=flat)](https://arxiv.org/abs/2203.14932)
 
 This paper proposes an attributable visual similarity learning (AVSL) framework for a more accurate and explainable similarity measure between images. 
 Extensive experiments on the CUB-200-2011, Cars196, and Stanford Online Products datasets demonstrate significant improvements over existing deep similarity learning methods and verify the interpretability of our framework.
@@ -126,3 +126,14 @@ Results on Stanford Online Products:
 | - | - | - | - |
 | baseline-PA | 78.4 | 90.5 | 96.2 |
 | AVSL-PA | 79.6 | 91.4 | 96.4 |
+
+## Bibtex
+
+```
+@article{zhang2022attributable,
+  title={Attributable Visual Similarity Learning},
+  author={Borui Zhang and Wenzhao Zheng and Jie Zhou and Jiwen Lu},
+  journal={arXiv preprint arXiv:2203.14932},
+  year={2022}
+}
+```
