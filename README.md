@@ -1,5 +1,9 @@
 # Attributable Visual Similarity Learning
 
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/attributable-visual-similarity-learning/metric-learning-on-cars196)](https://paperswithcode.com/sota/metric-learning-on-cars196?p=attributable-visual-similarity-learning)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/attributable-visual-similarity-learning/metric-learning-on-cub-200-2011)](https://paperswithcode.com/sota/metric-learning-on-cub-200-2011?p=attributable-visual-similarity-learning)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/attributable-visual-similarity-learning/metric-learning-on-stanford-online-products-1)](https://paperswithcode.com/sota/metric-learning-on-stanford-online-products-1?p=attributable-visual-similarity-learning)
+
 This repository is the official PyTorch implementation of **Attributable Visual Similarity Learning** (CVPR 2022). [![arXiv](https://img.shields.io/badge/arXiv-2203.14932-b31b1b.svg?style=flat)](https://arxiv.org/abs/2203.14932)
 
 This paper proposes an attributable visual similarity learning (AVSL) framework for a more accurate and explainable similarity measure between images. 
